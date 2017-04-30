@@ -60,7 +60,7 @@ void transfereRegistro(FILE *stream, struct registro r) {
 	char aux = '|'; // caracter que representa o delimitador de registro.
 	int v = 64+strlen(r.nomeSocial)+strlen(r.nomeFantasia)+strlen(r.motivoCancelamento)+strlen(r.nomeEmpresa);
 
-	fwrite(&v, sizeof(int), 1, stream);
+	fwrite(&v, sizeof(int), 1, stream); // tamanho do registros
 	// escreve os dados no arquivo binário e coloca delimitador em campos de tamanho variável.
 	fwrite(r.CNPJ, sizeof(char), 19, stream);
 	free(r.CNPJ);
