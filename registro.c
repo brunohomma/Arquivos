@@ -90,11 +90,9 @@ void importaRegistro(FILE *stream) {
 	struct registro reg;
 
 	flag = 1;
-	int i = 1;
 	do {
 		preencheRegistro(stream, &reg); // preenche o registro na estrutura de dados.
  		if (flag) transfereRegistro(binaryFile, reg); // transfere os dados da estrutura para o arquivo binário.
- 		i++;
  	} while(flag);
  	
  	fclose(binaryFile);	
