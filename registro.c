@@ -57,29 +57,30 @@ void preencheRegistro(FILE *stream, struct registro *r) {
 
 // Função que transfere os dados do registro armazenado na estrutura para um arquivo binário.
 void transfereRegistro(FILE *stream, struct registro r) {
-	char aux = '|'; // string que representa o delimitador de registro.
-	int v;
+	char aux = '|'; // caracter que representa o delimitador de registro.
+	int v = 64+strlen(r.nomeSocial)+strlen(r.nomeFantasia)+strlen(r.motivoCancelamento)+strlen(r.nomeEmpresa);
 
+	fwrite(&v, sizeof(int), 1, stream);
 	// escreve os dados no arquivo binário e coloca delimitador em campos de tamanho variável.
 	fwrite(r.CNPJ, sizeof(char), 19, stream);
 	free(r.CNPJ);
-	fwrite(r.nomeSocial, sizeof(char), strlen(r.nomeSocial)+1,stream);
+	fwrite(r.nomeSocial, sizeof(char), strlen(r.nomeSocial)+1, stream);
 	free(r.nomeSocial);
 	fwrite(&aux, sizeof(char), 1, stream);
-	fwrite(r.nomeFantasia, sizeof(char),strlen(r.nomeFantasia)+1,stream);
+	fwrite(r.nomeFantasia, sizeof(char), strlen(r.nomeFantasia)+1, stream);
 	free(r.nomeFantasia);
 	fwrite(&aux, sizeof(char), 1, stream);
-	fwrite(r.dataRegistro, sizeof(char), 9,stream);
+	fwrite(r.dataRegistro, sizeof(char), 9, stream);
 	free(r.dataRegistro);
-	fwrite(r.dataCancelamento, sizeof(char), 9,stream);
+	fwrite(r.dataCancelamento, sizeof(char), 9, stream);
 	free(r.dataCancelamento);
-	fwrite(r.motivoCancelamento, sizeof(char),strlen(r.motivoCancelamento)+1,stream);
+	fwrite(r.motivoCancelamento, sizeof(char), strlen(r.motivoCancelamento)+1, stream);
 	free(r.motivoCancelamento);
 	fwrite(&aux, sizeof(char), 1, stream);
-	fwrite(r.nomeEmpresa, sizeof(char),strlen(r.nomeEmpresa)+1,stream);
+	fwrite(r.nomeEmpresa, sizeof(char), strlen(r.nomeEmpresa)+1, stream);
 	free(r.nomeEmpresa);
 	fwrite(&aux, sizeof(char), 1, stream);
-	fwrite(r.CNPJAuditor, sizeof(char), 19,stream);
+	fwrite(r.CNPJAuditor, sizeof(char), 19, stream);
 	free(r.CNPJAuditor);
 }
 
