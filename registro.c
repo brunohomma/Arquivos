@@ -45,7 +45,7 @@ char *realizaLeitura(FILE *stream) {
 // Função que preenche os dados de um registro em uma estrutura de dados.
 void preencheRegistro(FILE *stream, struct registro *r) {
 	(*r).CNPJ = realizaLeitura(stream);
-	if(!flag) return;
+	if(!flag) return; // flag que desliga quando o arquivo de entrada foi completamente lido
 	(*r).nomeSocial = realizaLeitura(stream);
 	(*r).nomeFantasia = realizaLeitura(stream);
 	(*r).dataRegistro = realizaLeitura(stream);
