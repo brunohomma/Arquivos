@@ -34,7 +34,7 @@ char *realizaLeitura(FILE *stream) {
 // Função que preenche os dados de um registro em uma estrutura de dados.
 void preencheRegistro(FILE *stream, struct registro *r) {
 	(*r).CNPJ = realizaLeitura(stream);
-	if(!flag) return;
+	if(!flag) return; // flag que desliga quando o arquivo de entrada foi completamente lido
 	(*r).nomeSocial = realizaLeitura(stream);
 	(*r).nomeFantasia = realizaLeitura(stream);
 	(*r).dataRegistro = realizaLeitura(stream);
@@ -49,7 +49,7 @@ void transfereRegistro(FILE *stream, struct registro r) {
 	char aux = '|'; // caracter que representa o delimitador de registro.
 	int v = 64+strlen(r.nomeSocial)+strlen(r.nomeFantasia)+strlen(r.motivoCancelamento)+strlen(r.nomeEmpresa);
 
-	fwrite(&v, sizeof(int), 1, stream);
+	fwrite(&v, sizeof(int), 1, stream); // tamanho do registros
 	// escreve os dados no arquivo binário e coloca delimitador em campos de tamanho variável.
 	fwrite(r.CNPJ, sizeof(char), 19, stream);
 	free(r.CNPJ);
@@ -79,11 +79,9 @@ void importaRegistro(FILE *stream) {
 	struct registro reg;
 
 	flag = 1;
-	int i = 1;
 	do {
 		preencheRegistro(stream, &reg); // preenche o registro na estrutura de dados.
  		if (flag) transfereRegistro(binaryFile, reg); // transfere os dados da estrutura para o arquivo binário.
- 		i++;
  	} while(flag);
  	
  	fclose(binaryFile);	
