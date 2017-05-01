@@ -10,18 +10,6 @@
 #define ESPACO 32
 #define ENTER 10
 
-// Estrutura que compõe os dados de um registro, isto é, cada variável representa um campo e a estrutura, o registro.
-struct registro {
-	char *CNPJ; // campo fixo
-	char *nomeSocial; // campo variavel
-	char *nomeFantasia; // campo variavel
-	char *dataRegistro; // campo fixo
-	char *dataCancelamento; // campo fixo 
-	char *motivoCancelamento; // campo variavel
-	char *nomeEmpresa; // campo variavel
-	char *CNPJAuditor; // campo fixo
-};
-
 // Função que realiza a leitura do arquivo de entrada .csv
 char *realizaLeitura(FILE *stream) {
 	char *string = NULL, letra;
@@ -33,10 +21,11 @@ char *realizaLeitura(FILE *stream) {
 			flag = 0;
 			return NULL;
 		}
-
-		string = (char *)realloc(string, sizeof(char)*(size+1));
-		if (letra != ';' && letra != ENTER) string[size++] = letra;
-		else if (letra == ';' || letra == ENTER)string[size++] = '\0'; // caso encontre o delimitador de string, encerra a leitura.
+		if (letra != 13) { // parece que tem um caracter inválido de valor 13 no fim de cada registro no arquivo .csv
+			string = (char *)realloc(string, sizeof(char)*(size+1));
+			if (letra != ';' && letra != ENTER) string[size++] = letra;
+			else if (letra == ';' || letra == ENTER)string[size++] = '\0'; // caso encontre o delimitador de string, encerra a leitura.
+		}
 	} while(letra != ';' && letra != ENTER); // condição para encerrar a leitura.
 
 	return string;
