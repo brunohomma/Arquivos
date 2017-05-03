@@ -75,7 +75,7 @@ void transfereRegistro(FILE *stream, struct registro r) {
 
 // Função que importa um registro do arquivo .csv para o arquivo .bin mantendo o ponteiro da leitura onde parou na leitura anterior.
 void importaRegistro(FILE *stream) {
-	FILE *binaryFile = fopen("RegBin.bin", "wb"); // abre ou cria o arquivo binário.
+	FILE *binaryFile = fopen("RegBin_metodo1.dat", "wb"); // abre ou cria o arquivo binário.
 	struct registro reg;
 
 	flag = 1;

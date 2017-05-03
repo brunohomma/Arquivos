@@ -51,11 +51,12 @@ int main (int argc, char **argv) {
 				break;
 
 			case 3:
-				stream = fopen("RegBin.bin", "rb");
+				stream = fopen("RegBin_metodo1.dat", "rb");
 				interfaceFacial();
 				printf("Filtro: ");
 				catch_string(&filtro, &chave);
 				buscaFiltrada(stream, filtro, chave);
+				fclose(stream);
 				break;
 
 			case 6:

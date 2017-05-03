@@ -8,11 +8,12 @@ int *pos;
 void printRegistro(char *registro) {
 	int campo = 1;
 	int pos = 0;
+	char aux;
 
 	while (campo < 9) {
 		switch(campo) {
 			case 1:
-				printf("CNPJ: ");
+				printf("\nCNPJ: ");
 				while (registro[pos] != '\0') {
 					printf("%c", registro[pos]);
 					pos++;
@@ -73,7 +74,7 @@ void printRegistro(char *registro) {
 					printf("%c", registro[pos]);
 					pos++;
 				}
-				printf("\n");
+				printf("\n\n");
 				break;
 		}
 
@@ -83,6 +84,13 @@ void printRegistro(char *registro) {
 			if (registro[pos] == '|') pos++;
 		}	
 	}
+
+	do {
+		aux = fgetc(stdin);
+		printf("Pressione Enter para continuar...\n");
+	} while (aux != 10);
+
+	 printf("\e[H\e[2J");
 }
 
 void buscaPor(char *registro, int size, char *chave, int campo) {
@@ -116,7 +124,7 @@ char *registros(FILE *stream, int *s) {
 	pos = (int *)malloc(sizeof(int)*8);
 
 	fread(&reg_size, sizeof(int), 1, stream);
-	if (reg_size == EOF) {
+	if (feof(stream)) {
 		(*s) = 0;
 		return NULL;
 	}
