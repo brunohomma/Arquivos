@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <registro.h>
 #include <interface.h>
+#include <leituraArquivoBinario.h>
 
 int main (int argc, char **argv) {
 	FILE *registros = fopen("SCC0215012017projeto01turmaBdadosCompanhias.csv", "r"); // abre o arquivo de entrada para organizar os registros em um arquivos de saidas
@@ -21,8 +22,8 @@ int main (int argc, char **argv) {
 			break;
 
 		case 2:
-			testeSaida();
-			printf("\n...");
+			lerArquivoBinario();
+			
 	}
 
 	fclose(registros);
