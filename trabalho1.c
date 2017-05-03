@@ -18,9 +18,13 @@ int main (int argc, char **argv) {
 		case 1: // cria o arquivo binario
 			importaRegistro(registros);
 			printf("Arquivo Criado com sucesso!\n");
-			fclose(registros);
 			break;
+
+		case 2:
+			testeSaida();
+			printf("\n...");
 	}
 
+	fclose(registros);
 	return 0;
 }

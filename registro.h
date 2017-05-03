@@ -5,5 +5,6 @@ typedef struct registro t_registro;
 int flag;
 
 void importaRegistro(FILE *stream);
+void testeSaida();
 
 #endif
