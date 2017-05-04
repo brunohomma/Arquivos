@@ -115,3 +115,169 @@ void lerArquivoBinario(){
 	
 	fclose(binaryFile);
 }
+
+////////////////////////////// parte 5 e 6 ////////////////////////////
+struct registro * devolveRegistroBuscado(FILE *stream, int nroRegistro){
+	int regSize, countReg=0, achou = 0;
+	char c;
+	struct registro *reg;
+	char *CNPJ, *nomeSocial, *nomeFantasia, *dataRegistro, *dataCancelamento, *motivoCancelamento, *nomeEmpresa, *CNPJAuditor;
+	CNPJ = NULL;
+	nomeSocial = NULL;
+	nomeFantasia = NULL;
+	dataRegistro = NULL;
+	dataCancelamento = NULL;
+	motivoCancelamento = NULL;
+	nomeEmpresa = NULL;
+	CNPJAuditor = NULL;
+
+	//enquanto nao achou o registro dentro do arquivo binario
+	while(!achou){
+		if(countReg == nroRegistro){ //se o contador for igual ao numero do registro buscado entra no if
+			achou = 1; //seta a flag para 1 para sair do while
+			fread(&regSize, sizeof(int),1,stream); //le o tamanho do registro
+			reg = (struct registro *) malloc(regSize); //aloca espaco na memoria para o registro
+			
+			//leitura do CNPJ
+			CNPJ = (char *) calloc(19,sizeof(char));
+			fread(CNPJ,sizeof(char),19,stream);
+			
+			int strSize=0;
+			//leitura do nomeSocial
+			fread(&c,sizeof(char),1,stream);
+			while(c != '|'){
+				nomeSocial = (char *) realloc(nomeSocial,sizeof(char)*(strSize+1));
+				nomeSocial[strSize] = c;
+				strSize++;
+				fread(&c,sizeof(char),1,stream);
+			}
+
+			strSize = 0;
+			//leitura nomeFantasia
+			fread(&c,sizeof(char),1,stream);
+			while(c != '|'){
+				nomeFantasia = (char *) realloc(nomeFantasia,sizeof(char)*(strSize+1));
+				nomeFantasia[strSize] = c;
+				strSize++;
+				fread(&c,sizeof(char),1,stream);
+			}
+
+			//leitura dataRegistro
+			dataRegistro = (char *) calloc(9,sizeof(char));
+			fread(dataRegistro,sizeof(char),9,stream);
+
+			//leitura dataCancelamento
+			dataCancelamento = (char *) calloc(9,sizeof(char));
+			fread(dataCancelamento,sizeof(char),9,stream);
+
+			strSize = 0;
+			//leitura motivoCancelamento
+			fread(&c,sizeof(char),1,stream);
+			while(c != '|'){
+				motivoCancelamento = (char *) realloc(motivoCancelamento,sizeof(char)*(strSize+1));
+				motivoCancelamento[strSize] = c;
+				strSize++;
+				fread(&c,sizeof(char),1,stream);
+			}
+
+			strSize = 0;
+			//leitura nomeEmpresa
+			fread(&c,sizeof(char),1,stream);
+			while(c != '|'){
+				nomeEmpresa = (char *) realloc(nomeEmpresa,sizeof(char)*(strSize+1));
+				nomeEmpresa[strSize] = c;
+				strSize++;
+				fread(&c,sizeof(char),1,stream);
+			}
+
+			//leitura CNPJAuditor
+			CNPJAuditor = (char *) calloc(19,sizeof(char));
+			fread(CNPJAuditor,sizeof(char),19,stream);
+
+		}else{
+			fread(&regSize, sizeof(int),1,stream);//le o tamanho do registro
+			countReg++; //aumenta o contador de registros lidos
+			fseek(stream,regSize,SEEK_CUR); //posiciona o arquivo no proximo registro
+		}
+	}
+
+	reg->CNPJ = CNPJ;
+	reg->nomeSocial = nomeSocial;
+	reg->nomeFantasia = nomeFantasia;
+	reg->dataRegistro = dataRegistro;
+	reg->dataCancelamento = dataCancelamento;
+	reg->motivoCancelamento = motivoCancelamento;
+	reg->nomeEmpresa = nomeEmpresa;
+	reg->CNPJAuditor = CNPJAuditor;
+	return reg;
+}
+
+//Libera a memoria alocada para o registro
+void freeReg(struct registro *reg){
+	free(reg->CNPJ);
+	free(reg->nomeSocial);
+	free(reg->nomeFantasia);
+	free(reg->dataRegistro);
+	free(reg->dataCancelamento);
+	free(reg->motivoCancelamento);
+	free(reg->nomeEmpresa);
+	free(reg->CNPJAuditor);
+	free(reg);
+}
+
+//imprime os dados do registro buscado
+void printaRegistroBuscado(struct registro *reg, int nroReg){
+	printf("REGISTRO BUSCADO: %d\n",nroReg);
+	printf("CNPJ: %s\n",reg->CNPJ);
+	printf("Nome Social: %s\n",reg->nomeSocial);
+	printf("Nome Fantasia: %s\n",reg->nomeFantasia);
+	printf("Data Registro: %s\n",reg->dataRegistro);
+	printf("Data Cancelamento: %s\n",reg->dataCancelamento);
+	printf("Motivo Cancelamento: %s\n",reg->motivoCancelamento);
+	printf("Nome Empresa: %s\n",reg->nomeEmpresa);
+	printf("CNPJ do Auditor: %s\n",reg->CNPJAuditor);
+}
+
+//imprime campo passado por parametro do registro tambem passado por parametro
+void printaCampoBuscado(struct registro *reg, int nroReg, int nroCampo){
+	printf("Registro:%d Campo:%d\n",nroReg,nroCampo);
+	switch(nroCampo){
+		case 1:
+			printf("CNPJ: %s\n",reg->CNPJ);
+			break;
+		case 2:
+			printf("Nome Social: %s\n",reg->nomeSocial);
+			break;
+		case 3:
+			printf("Nome Fantasia: %s\n",reg->nomeFantasia);
+			break;
+		case 4:
+			printf("Data Registro: %s\n",reg->dataRegistro);
+			break;
+		case 5:
+			printf("Data de Cancelamento: %s\n",reg->dataCancelamento);
+			break;
+		case 7:
+			printf("Motivo de Cancelamento: %s\n",reg->motivoCancelamento);
+			break;
+		case 8:
+			printf("CNPJ do Auditor: %s\n",reg->CNPJAuditor);
+			break;
+	}
+}
+
+void parte6(int nroCampo,int nroReg){
+	FILE *binaryFile = fopen("RegBin.dat", "rb");
+	struct registro *reg = devolveRegistroBuscado(binaryFile,nroReg);
+	printaCampoBuscado(reg,nroReg,nroCampo);
+	fclose(binaryFile);
+	freeReg(reg);
+}
+
+void parte5(int nroReg){
+	FILE *binaryFile = fopen("RegBin.dat", "rb");
+	struct registro *reg = devolveRegistroBuscado(binaryFile,nroReg);
+	printaRegistroBuscado(reg,nroReg);
+	fclose(binaryFile);
+	freeReg(reg);
+}
