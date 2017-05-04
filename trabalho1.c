@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <registro.h>
+#include <registro1.h>
+#include <registro2.h>
 #include <buscafiltrada.h>
 #include <interface.h>
 
@@ -45,8 +46,12 @@ int main (int argc, char **argv) {
 		switch(op) {
 			case 1: // cria o arquivo binario
 				stream = fopen("SCC0215012017projeto01turmaBdadosCompanhias.csv", "r"); // abre o arquivo de entrada para organizar os registros em um arquivos de saidas
-				importaRegistro(stream);
-				printf("Arquivo Criado com sucesso!\n");
+				importaRegistro_metodo1(stream);
+				printf("Arquivo 1 Criado com sucesso!\n");
+				fclose(stream);
+				stream = fopen("SCC0215012017projeto01turmaBdadosCompanhias.csv", "r");
+				importaRegistro_metodo2(stream);
+				printf("Arquivo 2 Criado com sucesso!\n");
 				fclose(stream);
 				break;
 

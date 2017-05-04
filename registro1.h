@@ -1,5 +1,5 @@
-#ifndef _REGISTRO_H_
-#define _REGISTRO_H_
+#ifndef _REGISTRO1_H_
+#define _REGISTRO1_H_
 
 // Estrutura que compõe os dados de um registro, isto é, cada variável representa um campo e a estrutura, o registro.
 struct registro {
@@ -16,6 +16,6 @@ struct registro {
 typedef struct registro t_registro;
 int flag;
 
-void importaRegistro(FILE *stream);
+void importaRegistro_metodo1(FILE *stream);
 
 #endif

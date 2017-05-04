@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <registro.h>
+#include <registro1.h>
 
 int *pos;
 

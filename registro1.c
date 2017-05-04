@@ -1,17 +1,17 @@
 /*
- * Arquivo que realiza a importação dos registros armazenados em um arquivo do tipo .csv para um arquivo .bin,
+ * Arquivo que realiza a importação dos registros armazenados em um arquivo do tipo .csv para um arquivo .dat,
  * realizando as devidas separações entre campos(usando delimitadores de campos), e entre registros.
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <registro.h>
+#include <registro1.h>
 
 #define ESPACO 32
 #define ENTER 10
 
 // Função que realiza a leitura do arquivo de entrada .csv
-char *realizaLeitura(FILE *stream) {
+char *realizaLeitura_metodo1(FILE *stream) {
 	char *string = NULL, letra;
 	int size = 0;
 
@@ -32,20 +32,20 @@ char *realizaLeitura(FILE *stream) {
 }
 
 // Função que preenche os dados de um registro em uma estrutura de dados.
-void preencheRegistro(FILE *stream, struct registro *r) {
-	(*r).CNPJ = realizaLeitura(stream);
+void preencheRegistro_metodo1(FILE *stream, struct registro *r) {
+	(*r).CNPJ = realizaLeitura_metodo1(stream);
 	if(!flag) return; // flag que desliga quando o arquivo de entrada foi completamente lido
-	(*r).nomeSocial = realizaLeitura(stream);
-	(*r).nomeFantasia = realizaLeitura(stream);
-	(*r).dataRegistro = realizaLeitura(stream);
-	(*r).dataCancelamento = realizaLeitura(stream);
-	(*r).motivoCancelamento = realizaLeitura(stream);
-	(*r).nomeEmpresa = realizaLeitura(stream);
-	(*r).CNPJAuditor = realizaLeitura(stream);	
+	(*r).nomeSocial = realizaLeitura_metodo1(stream);
+	(*r).nomeFantasia = realizaLeitura_metodo1(stream);
+	(*r).dataRegistro = realizaLeitura_metodo1(stream);
+	(*r).dataCancelamento = realizaLeitura_metodo1(stream);
+	(*r).motivoCancelamento = realizaLeitura_metodo1(stream);
+	(*r).nomeEmpresa = realizaLeitura_metodo1(stream);
+	(*r).CNPJAuditor = realizaLeitura_metodo1(stream);	
 }
 
 // Função que transfere os dados do registro armazenado na estrutura para um arquivo binário.
-void transfereRegistro(FILE *stream, struct registro r) {
+void transfereRegistro_metodo1(FILE *stream, struct registro r) {
 	char aux = '|'; // caracter que representa o delimitador de registro.
 	int v = 64+strlen(r.nomeSocial)+strlen(r.nomeFantasia)+strlen(r.motivoCancelamento)+strlen(r.nomeEmpresa);
 
@@ -74,14 +74,14 @@ void transfereRegistro(FILE *stream, struct registro r) {
 }
 
 // Função que importa um registro do arquivo .csv para o arquivo .bin mantendo o ponteiro da leitura onde parou na leitura anterior.
-void importaRegistro(FILE *stream) {
+void importaRegistro_metodo1(FILE *stream) {
 	FILE *binaryFile = fopen("RegBin_metodo1.dat", "wb"); // abre ou cria o arquivo binário.
 	struct registro reg;
 
 	flag = 1;
 	do {
-		preencheRegistro(stream, &reg); // preenche o registro na estrutura de dados.
- 		if (flag) transfereRegistro(binaryFile, reg); // transfere os dados da estrutura para o arquivo binário.
+		preencheRegistro_metodo1(stream, &reg); // preenche o registro na estrutura de dados.
+ 		if (flag) transfereRegistro_metodo1(binaryFile, reg); // transfere os dados da estrutura para o arquivo binário.
  	} while(flag);
  	
  	fclose(binaryFile);	
