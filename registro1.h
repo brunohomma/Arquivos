@@ -14,6 +14,7 @@ struct registro {
 };
 
 typedef struct registro t_registro;
+int regQtd;
 int flag;
 
 void importaRegistro_metodo1(FILE *stream);

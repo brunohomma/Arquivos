@@ -33,18 +33,7 @@ char *realizaLeitura_metodo1(FILE *stream) {
 
 
 // Função que preenche os dados de um registro em uma estrutura de dados.
-<<<<<<< HEAD:registro.c
-void preencheRegistro(FILE *stream, struct registro *r) {
-	(*r).CNPJ = realizaLeitura(stream);
-	if(!flag) return; // flag que desliga quando o arquivo de entrada foi completamente lido
-	(*r).nomeSocial = realizaLeitura(stream);
-	(*r).nomeFantasia = realizaLeitura(stream);
-	(*r).dataRegistro = realizaLeitura(stream);
-	(*r).dataCancelamento = realizaLeitura(stream);
-	(*r).motivoCancelamento = realizaLeitura(stream);
-	(*r).nomeEmpresa = realizaLeitura(stream);
-	(*r).CNPJAuditor = realizaLeitura(stream);	
-=======
+
 void preencheRegistro_metodo1(FILE *stream, struct registro *r) {
 	(*r).CNPJ = realizaLeitura_metodo1(stream);
 	if(!flag) return; // flag que desliga quando o arquivo de entrada foi completamente lido
@@ -55,7 +44,6 @@ void preencheRegistro_metodo1(FILE *stream, struct registro *r) {
 	(*r).motivoCancelamento = realizaLeitura_metodo1(stream);
 	(*r).nomeEmpresa = realizaLeitura_metodo1(stream);
 	(*r).CNPJAuditor = realizaLeitura_metodo1(stream);	
->>>>>>> 8ae3a500ff3daa04386c16ecf586d494154848a9:registro1.c
 }
 
 // Função que transfere os dados do registro armazenado na estrutura para um arquivo binário.
@@ -88,25 +76,25 @@ void transfereRegistro_metodo1(FILE *stream, struct registro r) {
 }
 
 // Função que importa um registro do arquivo .csv para o arquivo .bin mantendo o ponteiro da leitura onde parou na leitura anterior.
-<<<<<<< HEAD:registro.c
-void importaRegistro(FILE *stream) {
-	FILE *binaryFile = fopen("RegBin.dat", "wb"); // abre ou cria o arquivo binário.
-=======
+
 void importaRegistro_metodo1(FILE *stream) {
 	FILE *binaryFile = fopen("RegBin_metodo1.dat", "wb"); // abre ou cria o arquivo binário.
->>>>>>> 8ae3a500ff3daa04386c16ecf586d494154848a9:registro1.c
+	FILE *aux = fopen("regQtd.dat", "wb+"); // somente para guardar a quantidade de registros existentes
 	struct registro reg;
+
+	regQtd = 0;
 
 	flag = 1;
 	do {
-<<<<<<< HEAD:registro.c
-		preencheRegistro(stream, &reg); // preenche o registro na estrutura de dados.
- 		if (flag) transfereRegistro(binaryFile, reg); // transfere os dados da estrutura para o arquivo binário.
-=======
 		preencheRegistro_metodo1(stream, &reg); // preenche o registro na estrutura de dados.
- 		if (flag) transfereRegistro_metodo1(binaryFile, reg); // transfere os dados da estrutura para o arquivo binário.
->>>>>>> 8ae3a500ff3daa04386c16ecf586d494154848a9:registro1.c
+ 		if (flag) {
+ 			transfereRegistro_metodo1(binaryFile, reg); // transfere os dados da estrutura para o arquivo binário.
+ 			regQtd++;
+ 		}	
  	} while(flag);
  	
- 	fclose(binaryFile);	
+ 	fwrite(&regQtd, sizeof(int), 1, aux);
+
+ 	fclose(binaryFile);
+ 	fclose(aux);	
 }
